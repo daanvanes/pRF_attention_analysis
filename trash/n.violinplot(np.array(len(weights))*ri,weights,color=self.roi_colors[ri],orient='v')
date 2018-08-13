@@ -1,0 +1,223 @@
+[0;31mSignature:[0m [0msn[0m[0;34m.[0m[0mviolinplot[0m[0;34m([0m[0mx[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0my[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mhue[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mdata[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0morder[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mhue_order[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mbw[0m[0;34m=[0m[0;34m'scott'[0m[0;34m,[0m [0mcut[0m[0;34m=[0m[0;36m2[0m[0;34m,[0m [0mscale[0m[0;34m=[0m[0;34m'area'[0m[0;34m,[0m [0mscale_hue[0m[0;34m=[0m[0mTrue[0m[0;34m,[0m [0mgridsize[0m[0;34m=[0m[0;36m100[0m[0;34m,[0m [0mwidth[0m[0;34m=[0m[0;36m0.8[0m[0;34m,[0m [0minner[0m[0;34m=[0m[0;34m'box'[0m[0;34m,[0m [0msplit[0m[0;34m=[0m[0mFalse[0m[0;34m,[0m [0morient[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mlinewidth[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mcolor[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0mpalette[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0msaturation[0m[0;34m=[0m[0;36m0.75[0m[0;34m,[0m [0max[0m[0;34m=[0m[0mNone[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0m
+[0;31mDocstring:[0m
+Draw a combination of boxplot and kernel density estimate.
+
+A violin plot plays a similar role as a box and whisker plot. It shows the
+distribution of quantitative data across several levels of one (or more)
+categorical variables such that those distributions can be compared. Unlike
+a box plot, in which all of the plot components correspond to actual
+datapoints, the violin plot features a kernel density estimation of the
+underlying distribution.
+
+This can be an effective and attractive way to show multiple distributions
+of data at once, but keep in mind that the estimation procedure is
+influenced by the sample size, and violins for relatively small samples
+might look misleadingly smooth.
+
+Input data can be passed in a variety of formats, including:
+
+- Vectors of data represented as lists, numpy arrays, or pandas Series
+  objects passed directly to the ``x``, ``y``, and/or ``hue`` parameters.
+- A "long-form" DataFrame, in which case the ``x``, ``y``, and ``hue``
+  variables will determine how the data are plotted.
+- A "wide-form" DataFrame, such that each numeric column will be plotted.
+- Anything accepted by ``plt.boxplot`` (e.g. a 2d array or list of vectors)
+
+In most cases, it is possible to use numpy or Python objects, but pandas
+objects are preferable because the associated names will be used to
+annotate the axes. Additionally, you can use Categorical types for the
+grouping variables to control the order of plot elements.    
+
+Parameters
+----------
+x, y, hue : names of variables in ``data`` or vector data, optional
+    Inputs for plotting long-form data. See examples for interpretation.        
+data : DataFrame, array, or list of arrays, optional
+    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+    interpreted as wide-form. Otherwise it is expected to be long-form.    
+order, hue_order : lists of strings, optional
+    Order to plot the categorical levels in, otherwise the levels are
+    inferred from the data objects.        
+bw : {'scott', 'silverman', float}, optional
+    Either the name of a reference rule or the scale factor to use when
+    computing the kernel bandwidth. The actual kernel size will be
+    determined by multiplying the scale factor by the standard deviation of
+    the data within each bin.
+cut : float, optional
+    Distance, in units of bandwidth size, to extend the density past the
+    extreme datapoints. Set to 0 to limit the violin range within the range
+    of the observed data (i.e., to have the same effect as ``trim=True`` in
+    ``ggplot``.
+scale : {"area", "count", "width"}, optional
+    The method used to scale the width of each violin. If ``area``, each
+    violin will have the same area. If ``count``, the width of the violins
+    will be scaled by the number of observations in that bin. If ``width``,
+    each violin will have the same width.
+scale_hue : bool, optional
+    When nesting violins using a ``hue`` variable, this parameter
+    determines whether the scaling is computed within each level of the
+    major grouping variable (``scale_hue=True``) or across all the violins
+    on the plot (``scale_hue=False``).
+gridsize : int, optional
+    Number of points in the discrete grid used to compute the kernel
+    density estimate.
+width : float, optional
+    Width of a full element when not using hue nesting, or width of all the
+    elements for one level of the major grouping variable.    
+inner : {"box", "quartile", "point", "stick", None}, optional
+    Representation of the datapoints in the violin interior. If ``box``,
+    draw a miniature boxplot. If ``quartiles``, draw the quartiles of the
+    distribution.  If ``point`` or ``stick``, show each underlying
+    datapoint. Using ``None`` will draw unadorned violins.
+split : bool, optional
+    When using hue nesting with a variable that takes two levels, setting
+    ``split`` to True will draw half of a violin for each level. This can
+    make it easier to directly compare the distributions.
+orient : "v" | "h", optional
+    Orientation of the plot (vertical or horizontal). This is usually
+    inferred from the dtype of the input variables, but can be used to
+    specify when the "categorical" variable is a numeric or when plotting
+    wide-form data.    
+linewidth : float, optional
+    Width of the gray lines that frame the plot elements.    
+color : matplotlib color, optional
+    Color for all of the elements, or seed for :func:`light_palette` when
+    using hue nesting.    
+palette : seaborn color palette or dict, optional
+    Colors to use for the different levels of the ``hue`` variable. Should
+    be something that can be interpreted by :func:`color_palette`, or a
+    dictionary mapping hue levels to matplotlib colors.    
+saturation : float, optional
+    Proportion of the original saturation to draw colors at. Large patches
+    often look better with slightly desaturated colors, but set this to
+    ``1`` if you want the plot colors to perfectly match the input color
+    spec.    
+ax : matplotlib Axes, optional
+    Axes object to draw the plot onto, otherwise uses the current Axes.    
+
+Returns
+-------
+ax : matplotlib Axes
+    Returns the Axes object with the boxplot drawn onto it.    
+
+See Also
+--------
+boxplot : A traditional box-and-whisker plot with a similar API.    
+stripplot : A scatterplot where one variable is categorical. Can be used
+            in conjunction with other plots to show each observation.    
+swarmplot : A categorical scatterplot where the points do not overlap. Can
+            be used with other plots to show each observation.    
+
+Examples
+--------
+
+Draw a single horizontal violinplot:
+
+.. plot::
+    :context: close-figs
+
+    >>> import seaborn as sns
+    >>> sns.set_style("whitegrid")
+    >>> tips = sns.load_dataset("tips")
+    >>> ax = sns.violinplot(x=tips["total_bill"])
+
+Draw a vertical violinplot grouped by a categorical variable:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips)
+
+Draw a violinplot with nested grouping by two categorical variables:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="smoker",
+    ...                     data=tips, palette="muted")
+
+Draw split violins to compare the across the hue variable:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="smoker",
+    ...                     data=tips, palette="muted", split=True)
+
+Control violin order by passing an explicit order:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="time", y="tip", data=tips,
+    ...                     order=["Dinner", "Lunch"])
+
+Scale the violin width by the number of observations in each bin:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+    ...                     data=tips, palette="Set2", split=True,
+    ...                     scale="count")
+
+Draw the quartiles as horizontal lines instead of a mini-box:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+    ...                     data=tips, palette="Set2", split=True,
+    ...                     scale="count", inner="quartile")
+
+Show each observation with a stick inside the violin:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+    ...                     data=tips, palette="Set2", split=True,
+    ...                     scale="count", inner="stick")
+
+Scale the density relative to the counts across all bins:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+    ...                     data=tips, palette="Set2", split=True,
+    ...                     scale="count", inner="stick", scale_hue=False)
+
+Use a narrow bandwidth to reduce the amount of smoothing:
+
+.. plot::
+    :context: close-figs
+
+    >>> ax = sns.violinplot(x="day", y="total_bill", hue="sex",
+    ...                     data=tips, palette="Set2", split=True,
+    ...                     scale="count", inner="stick",
+    ...                     scale_hue=False, bw=.2)
+
+Draw horizontal violins:
+
+.. plot::
+    :context: close-figs
+
+    >>> planets = sns.load_dataset("planets")
+    >>> ax = sns.violinplot(x="orbital_period", y="method",
+    ...                     data=planets[planets.orbital_period < 1000],
+    ...                     scale="width", palette="Set3")
+
+Draw a violin plot on to a :class:`FacetGrid` to group within an additional
+categorical variable:
+
+.. plot::
+    :context: close-figs
+
+    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
+    >>> (g.map(sns.violinplot, "sex", "total_bill", "smoker", split=True)
+    ...   .despine(left=True)
+    ...   .add_legend(title="smoker"))  # doctest: +ELLIPSIS
+    <seaborn.axisgrid.FacetGrid object at 0x...>
+[0;31mFile:[0m      ~/anaconda2/envs/analysis/lib/python2.7/site-packages/seaborn/categorical.py
+[0;31mType:[0m      function
