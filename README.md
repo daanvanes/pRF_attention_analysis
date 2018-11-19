@@ -4,6 +4,8 @@ This software package contains the analysis presented in the manuscript 'Spatial
 
 The functionality in this package are called by the run*.py scripts. 
 
+The fitted parameters from the Feature Preference Mapper GLM and the pRF parameters are available online. The raw timecourse niftis are not, therefore the preprocessing (run_subjects.py) cannot be repeated, but the statistical analyses and figures created in our manuscript can be repeated using the run_plots.py and run_eye_plots.py scripts (see below). 
+
 #### run_subjects.py
 This script runs:
 * fMRI preprocessing
@@ -16,11 +18,11 @@ The preprocessing interfaces with FSL and other utilities through use of a gener
 
 ### pRF HDF5 file
 
-The results of these procedures are stored in the group_level.hdf5 file, which can be found at https://figshare.com/articles/prf_fit_and_mapper_glm_results/5488276.
+The results of the preprocessing procedures run in run_subjects.py are stored in the group_level.hdf5 file, which can be found at https://figshare.com/articles/prf_fit_and_mapper_glm_results/5488276.
 
 If you are unfamiliar with hdf5 files, you can find information about the format here: https://support.hdfgroup.org/HDF5/whatishdf5.html. The files can be inspected using an hdf5 viewer like hdfCompass: https://support.hdfgroup.org/projects/compass/. You can access and import the data into Matlab using hdf5read (https://nl.mathworks.com/help/matlab/ref/hdf5read.html), and in Python using h5py (https://www.h5py.org). 
 
-The file is organized according to subjects (DE/NA/JS/JW/TK). Each subject then has subfields for each ROI (like lh.V1). These ROI fields contain 6 fields corresponding to the pRF results (statistics about the fit, (corrs) and resulting pRF parameters (results)) fitted on data from the Attend Fixation (Fix), Attend Color (Colors) and Attend Temporal Frequency (Speed) conditions:
+The file is organized according to subjects. Each subject then has subfields for each ROI (like lh.V1). These ROI fields contain 6 fields corresponding to the pRF results (statistics about the fit, (corrs) and resulting pRF parameters (results)) fitted on data from the Attend Fixation (Fix), Attend Color (Colors) and Attend Temporal Frequency (Speed) conditions:
 
 * Colors_corrs
 * Colors_results
@@ -47,7 +49,7 @@ The _results fields contains 26 values for each voxel that describe the pRF mode
 * prediction amplitude: 20
 * prediction baseline: 5
 
-Due to an error in the definition of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
+Due to a misspecification of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
 
 The HRF_params field contains 3 hrf parameters for each voxel. These values are identical for each voxel, as we used the median HRF across the 1000 most responsive voxels as the subject-specific HRF (see Methods). The values are scaling factors of the 0th, 1st and 2nd derivative of the SPM canonical HRF.
 
@@ -69,7 +71,7 @@ Each of these subfields (copes, t_stat, varcopes, z_stat) contains statistics fo
 11. bw_moving > bw_static
 12. test contrast (not interpretable)
 
-The behavioral data is stored in the Color / Fix / Fix_no_stim / and Speed groups. The structure of the subfields here is given by the following: {condition}_{type}_{ecc_bin}_run_{runindex}. Condition refers to (Color / Fix / Fix_no_stim /  Speed); type can be either response_times, response_values or staircase_values. For you end use, the response time and staircase values are not very useful, as (1) the offset of the timings here is not given, and (2) these staircase values were converted to other values in the experimental software. Yet, the response_values variable is directly interpretable and corresponds to accuracy. The ecc_bin refers to the distance to the fovea in 3 bins (0/1/2). The runindex refers to fMRI run. More information about behavior can be found in the gaze hdf5 (following section)
+The behavioral data is stored in the Color / Fix / Fix_no_stim / and Speed groups. The structure of the subfields here is given by the following: {condition}_{type}_{ecc_bin}_run_{runindex}. Condition refers to (Color / Fix / Fix_no_stim /  Speed); type can be either response_times, response_values or staircase_values. For you end use, the response time and staircase values are not very useful, as (1) the offset of the timings here is not given, and (2) these staircase values were converted to other values in the experimental software. More information about the staircase values and response times can be obtained from the gaze data hdf5 (see below). Yet, the response_values variable is directly interpretable and corresponds to accuracy. The ecc_bin refers to the distance to the fovea in 3 bins (0/1/2). The runindex refers to fMRI run. 
 
 ### Gaze data HDF5
 
@@ -77,7 +79,7 @@ The gaze data recorded by the Eyelink 1000 are stored in a file named group_leve
 
 This file contains a separate subfield for each experimental run. Within these fields, are the following subfields. 
 
-The raw gaze data is stored in a subfield called 'block_0' (the 'block' subfield is redundant). Withink block_0, the relevant data is stored in 'block_1_values'. The subfield 'block0_items' provides the column names.
+The raw gaze data is stored in a subfield called 'block_0' (the 'block' subfield is redundant). Withink block_0, the relevant data is stored in 'block_0_values'. The subfield 'block0_items' provides the column names.
 
 In the remaining subfields, the column names are provided in the hdf5:
 
