@@ -49,7 +49,7 @@ The _results fields contains 26 values for each voxel that describe the pRF mode
 * prediction amplitude: 20
 * prediction baseline: 5
 
-Due to a misspecification of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
+*Please note:* Due to a misspecification of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
 
 The HRF_params field contains 3 hrf parameters for each voxel. These values are identical for each voxel, as we used the median HRF across the 1000 most responsive voxels as the subject-specific HRF (see Methods). The values are scaling factors of the 0th, 1st and 2nd derivative of the SPM canonical HRF.
 
@@ -88,8 +88,8 @@ In the remaining subfields, the column names are provided in the hdf5:
 3. fixation_from_message_file. This subfield contains the fixations detected by the Eyelink software.
 4. mapper_transients: empty field
 5. parameters: these are the trial specific parameters from the experiment (trial refers to single bar pass)
-* BY_color: refers to the subject specific BY to RG luminance gain, where 1 would mean equal luminance.
-* BY_comparison_color: used by the color matcher procedure to determine subject specific relative luminances
+* BY_color: refers to the subject specific BY to RG gain
+* BY_comparison_color: used by the color matcher procedure to determine subject specific relative color gains
 * PRF_ITI_in_TR: time between two bar passes in TR
 * PRF_period_in_TR: bar pass duration in TR
 * RG_color: baseline color to which the BY color is determined using the BY_color ratio
