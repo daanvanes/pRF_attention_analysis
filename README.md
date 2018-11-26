@@ -49,7 +49,7 @@ The _results fields contains 26 values for each voxel that describe the pRF mode
 * prediction amplitude: 20
 * prediction baseline: 5
 
-*Please note:* Due to a misspecification of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
+**Please note:** Due to a misspecification of the stimulus radius in the fit procedure, pRF x, y, eccentricity and size are wrongly scaled. To resolve this, multiply all values with 0.48 to arrive at values in degrees of visual angle. 
 
 The HRF_params field contains 3 hrf parameters for each voxel. These values are identical for each voxel, as we used the median HRF across the 1000 most responsive voxels as the subject-specific HRF (see Methods). The values are scaling factors of the 0th, 1st and 2nd derivative of the SPM canonical HRF.
 
